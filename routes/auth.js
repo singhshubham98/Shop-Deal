@@ -1,9 +1,18 @@
+const express = require("express");
 const User = require("../models/user");
 const { errorHandler } = require("../helpers/dbErrorHandler");
 const jwt = require("jsonwebtoken"); // to generate signed token
-const expressJwt = require("express-jwt"); // for authorization check
+const expressJwt = require("express-jwt");
+const router = express.Router();
 
-exports.signup = (req, res) => {
+const { signupValidator } = require("../validator/validate");
+
+const requireSignin = expressJwt({
+  secret: process.env.JWT_SECRET,
+  userProperty: "auth"
+});
+
+router.post("/signup", signupValidator, (req, res) => {
   const user = new User(req.body);
 
   user.save((err, user) => {
@@ -16,9 +25,9 @@ exports.signup = (req, res) => {
     user.hash_password = undefined;
     res.json({ user });
   });
-};
+});
 
-exports.signin = (req, res) => {
+router.post("/signin", (req, res) => {
   const { email, password } = req.body;
   // find the user based on email
   User.findOne({ email }, (err, user) => {
@@ -46,9 +55,12 @@ exports.signin = (req, res) => {
 
     return res.json({ token, user: { _id, name, email, role } });
   });
-};
+});
 
-exports.signout = (req, res) => {
+router.get("/signout", requireSignin, (req, res) => {
   res.clearCookie("t");
   res.json({ message: "Signout Success" });
-};
+});
+
+module.exports = requireSignin;
+module.exports = router;

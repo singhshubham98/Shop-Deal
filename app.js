@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const expressValidator = require("express-validator");
 require("dotenv").config();
+const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/user");
 
 //apps
@@ -12,7 +13,7 @@ const app = express();
 
 //database
 mongoose
-  .connect("mongodb://localhost:27017/ecommerce", {
+  .connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useCreateIndex: true
   })
@@ -25,7 +26,8 @@ app.use(cookieParser());
 app.use(expressValidator());
 
 //routes middleware
-app.use("/api", userRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/user", userRoutes);
 
 const port = process.env.PORT || 5000;
 
