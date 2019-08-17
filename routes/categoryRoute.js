@@ -6,15 +6,39 @@ const {
   isAdmin
 } = require("../controllers/authController");
 
+const { userById } = require("../controllers/userController");
 const {
-  userById,
+  createCategory,
   categoryById,
-  readCategory
-} = require("../controllers/userController");
-const { create } = require("../controllers/categoryController");
+  readCategory,
+  updateCategory,
+  deleteCategory,
+  list
+} = require("../controllers/categoryController");
 
 router.get("/category/:categoryId", readCategory);
-router.post("/category/create/:userId", requireSignin, isAuth, isAdmin, create);
+router.post(
+  "/category/create/:userId",
+  requireSignin,
+  isAuth,
+  isAdmin,
+  createCategory
+);
+router.put(
+  "/category/:categoryId/:userId",
+  requireSignin,
+  isAuth,
+  isAdmin,
+  updateCategory
+);
+router.delete(
+  "/category/:categoryId/:userId",
+  requireSignin,
+  isAuth,
+  isAdmin,
+  deleteCategory
+);
+router.get("/categories", list);
 
 router.param("categoryId", categoryById);
 router.param("userId", userById);
