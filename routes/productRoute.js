@@ -11,7 +11,8 @@ const {
   productById,
   readProduct,
   editProduct,
-  deleteProduct
+  deleteProduct,
+  list
 } = require("../controllers/productController");
 const { userById } = require("../controllers/userController");
 
@@ -32,6 +33,8 @@ router.delete(
   isAdmin,
   deleteProduct
 );
+
+router.get("/products", list);
 
 router.param("productId", productById);
 router.param("userId", userById);
