@@ -13,7 +13,9 @@ const {
   editProduct,
   deleteProduct,
   list,
-  relatedProducts
+  relatedProducts,
+  listCategories,
+  listBySearch
 } = require("../controllers/productController");
 const { userById } = require("../controllers/userController");
 
@@ -37,6 +39,8 @@ router.delete(
 
 router.get("/products", list);
 router.get("/products/related/:productId", relatedProducts);
+router.get("/products/categories", listCategories);
+router.post("/products/by/search", listBySearch);
 
 router.param("productId", productById);
 router.param("userId", userById);
