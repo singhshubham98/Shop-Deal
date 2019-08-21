@@ -7,13 +7,20 @@ const {
   isAdmin
 } = require("../controllers/authController");
 
-const { userById } = require("../controllers/userController");
+const {
+  userById,
+  readUserProfile,
+  updateUserProfile
+} = require("../controllers/userController");
 
 router.get("/secret/:userId", requireSignin, isAuth, isAdmin, (req, res) => {
   res.json({
     user: req.profile
   });
 });
+
+router.get("/user/:userId", readUserProfile);
+router.put("/user/:userId", updateUserProfile);
 
 router.param("userId", userById);
 

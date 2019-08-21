@@ -1,0 +1,9 @@
+.navDiv {
+  background-color: rgb(9, 37, 46);
+  border-bottom: 4px solid #425155;
+  height: 60px;
+}
+
+.navbarBrand {
+  color: #ffffff !important;
+}
