@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import { API } from "../config";
 import image from "../image/authentication.svg";
 import "../style/signup.css";
-import { Form, FormGroup, Alert, Label, Button } from "reactstrap";
+import { Form, FormGroup, Label, Button } from "reactstrap";
+import { signup } from "../auth/index";
+import { Link } from "react-router-dom";
 
 class Signup extends Component {
   state = {
@@ -12,19 +13,53 @@ class Signup extends Component {
     error: "",
     success: false
   };
+
   onChange = e => {
     this.setState({
-      [e.target.id]: e.target.value,
-      error: false
+      ...this.state,
+      error: false,
+      [e.target.id]: e.target.value
     });
   };
 
   onSubmit = e => {
     e.preventDefault();
-    // const { email, password } = this.state;
-    console.log(this.state);
+    const { name, email, password } = this.state;
+    this.setState({ ...this.state, error: false });
+    signup({ name, email, password }).then(data => {
+      if (data.error) {
+        this.setState({ ...this.state, error: data.error, success: false });
+      } else {
+        this.setState({
+          ...this.state,
+          name: "",
+          email: "",
+          password: "",
+          error: "",
+          success: true
+        });
+      }
+    });
   };
+
   render() {
+    const showError = () => (
+      <div
+        className="alert alert-danger"
+        style={{ display: this.state.error ? "" : "none" }}
+      >
+        {this.state.error}
+      </div>
+    );
+
+    const showSuccess = () => (
+      <div
+        className="alert alert-info"
+        style={{ display: this.state.success ? "" : "none" }}
+      >
+        New account is created. Please <Link to="/signin">Singin</Link>
+      </div>
+    );
     return (
       <React.Fragment>
         <div className="loginDiv">
@@ -38,9 +73,7 @@ class Signup extends Component {
                 <p style={{ textAlign: "center" }}>
                   Fill in your email and password to proceed
                 </p>
-                {this.state.error ? (
-                  <Alert color="danger">{this.state.error} </Alert>
-                ) : null}
+
                 <Form className="form" onSubmit={this.onSubmit}>
                   <FormGroup>
                     <Label>Name</Label>
@@ -76,10 +109,12 @@ class Signup extends Component {
                       onClick={this.toggle}
                       className="button button__accent"
                     >
-                      Log in
+                      Signup
                     </Button>
                   </FormGroup>
                 </Form>
+                {showSuccess()}
+                {showError()}
               </div>
             </div>
           </div>

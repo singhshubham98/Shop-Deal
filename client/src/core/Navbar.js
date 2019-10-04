@@ -2,7 +2,6 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSignInAlt, faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
 import "../style/menu.css";
-import { Navbar, NavbarBrand, Nav, NavItem } from "reactstrap";
 import { Link, withRouter } from "react-router-dom";
 
 const isActive = (history, path) => {
@@ -15,18 +14,24 @@ const isActive = (history, path) => {
 
 const Menu = ({ history }) => {
   return (
-    <div>
-      <Navbar expand="xs" className="navDiv" sticky="top">
-        <NavbarBrand className="navbarBrand ml-4" to="/">
+    <React.Fragment>
+      <nav className="navbar fixed-top navbar-expand-md custom-navbar navDiv">
+        <Link to="/" className="navbar-brand">
           Shopdeal
-        </NavbarBrand>
-        <Nav>
-          <NavItem className="nav-item">
+        </Link>
+        <button
+          className="navbar-toggler navbar-toggler-right custom-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#collapsibleNavbar"
+        >
+          <span className="navbar-toggler-icon "></span>
+        </button>
+        <div className="collapse navbar-collapse" id="collapsibleNavbar">
+          <ul className="navbar-nav ml-auto">
             <Link className="nav-link" to="/" style={isActive(history, "/")}>
               Home
             </Link>
-          </NavItem>
-          <NavItem className="nav-item">
             <Link
               className="nav-link"
               to="/signup"
@@ -34,8 +39,6 @@ const Menu = ({ history }) => {
             >
               Signup <FontAwesomeIcon icon={faSignOutAlt} />
             </Link>
-          </NavItem>
-          <NavItem className="nav-item">
             <Link
               className="nav-link"
               to="/signin"
@@ -43,10 +46,10 @@ const Menu = ({ history }) => {
             >
               Signin <FontAwesomeIcon icon={faSignInAlt} />
             </Link>
-          </NavItem>
-        </Nav>
-      </Navbar>
-    </div>
+          </ul>
+        </div>
+      </nav>
+    </React.Fragment>
   );
 };
 
