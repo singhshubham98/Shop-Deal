@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import image from "../image/authentication.svg";
 import "../style/signup.css";
 import { Form, FormGroup, Label, Button } from "reactstrap";
-import { signin, authenticate } from "../auth/index";
+import { signin, authenticate, isAuthenticated } from "../auth/index";
 import { Redirect } from "react-router-dom";
 class Signin extends Component {
   state = {
@@ -59,9 +59,14 @@ class Signin extends Component {
         </div>
       );
 
+    const { user } = isAuthenticated();
     const redirectPage = () => {
       if (this.state.redirect) {
-        return <Redirect to="/" />;
+        if (user && user.role === 1) {
+          return <Redirect to="/admin/dashboard" />;
+        } else {
+          return <Redirect to="/user/dashboard" />;
+        }
       }
     };
 
