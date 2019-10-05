@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSignInAlt, faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
 import "../style/menu.css";
 import { Link, withRouter } from "react-router-dom";
+import { signout, isAuthenticated } from "../auth/index";
 
 const isActive = (history, path) => {
   if (history.location.pathname === path) {
@@ -34,18 +35,42 @@ const Menu = ({ history }) => {
             </Link>
             <Link
               className="nav-link"
-              to="/signup"
-              style={isActive(history, "/signup")}
+              to="/dashboard "
+              style={isActive(history, "/dashboard")}
             >
-              Signup <FontAwesomeIcon icon={faSignOutAlt} />
+              Dashboard
             </Link>
-            <Link
-              className="nav-link"
-              to="/signin"
-              style={isActive(history, "/signin")}
-            >
-              Signin <FontAwesomeIcon icon={faSignInAlt} />
-            </Link>
+            {!isAuthenticated() && (
+              <React.Fragment>
+                <Link
+                  className="nav-link"
+                  to="/signup"
+                  style={isActive(history, "/signup")}
+                >
+                  Signup <FontAwesomeIcon icon={faSignOutAlt} />
+                </Link>
+                <Link
+                  className="nav-link"
+                  to="/signin"
+                  style={isActive(history, "/signin")}
+                >
+                  Signin <FontAwesomeIcon icon={faSignInAlt} />
+                </Link>
+              </React.Fragment>
+            )}
+            {isAuthenticated() && (
+              <span
+                className="nav-link"
+                style={{ cursor: "pointer", color: "#ffffff" }}
+                onClick={() => {
+                  signout(() => {
+                    history.push("/");
+                  });
+                }}
+              >
+                Sign out <FontAwesomeIcon icon={faSignInAlt} />
+              </span>
+            )}
           </ul>
         </div>
       </nav>

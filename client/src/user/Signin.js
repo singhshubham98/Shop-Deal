@@ -2,16 +2,15 @@ import React, { Component } from "react";
 import image from "../image/authentication.svg";
 import "../style/signup.css";
 import { Form, FormGroup, Label, Button } from "reactstrap";
-import { signup } from "../auth/index";
-import { Link } from "react-router-dom";
-
+import { signin, authenticate } from "../auth/index";
+import { Redirect } from "react-router-dom";
 class Signin extends Component {
   state = {
-    name: "",
     email: "",
     password: "",
     error: "",
-    success: false
+    loading: false,
+    redirect: false
   };
 
   onChange = e => {
@@ -24,19 +23,17 @@ class Signin extends Component {
 
   onSubmit = e => {
     e.preventDefault();
-    const { name, email, password } = this.state;
-    this.setState({ ...this.state, error: false });
-    signup({ name, email, password }).then(data => {
+    const { email, password } = this.state;
+    this.setState({ ...this.state, error: false, loading: true });
+    signin({ email, password }).then(data => {
       if (data.error) {
-        this.setState({ ...this.state, error: data.error, success: false });
+        this.setState({ ...this.state, error: data.error, loading: false });
       } else {
-        this.setState({
-          ...this.state,
-          name: "",
-          email: "",
-          password: "",
-          error: "",
-          success: true
+        authenticate(data, () => {
+          this.setState({
+            ...this.state,
+            redirect: true
+          });
         });
       }
     });
@@ -52,14 +49,22 @@ class Signin extends Component {
       </div>
     );
 
-    const showSuccess = () => (
-      <div
-        className="alert alert-info"
-        style={{ display: this.state.success ? "" : "none" }}
-      >
-        New account is created. Please <Link to="/signin">Singin</Link>
-      </div>
-    );
+    const showLoading = () =>
+      this.state.loading && (
+        <div
+          className="alert alert-info"
+          style={{ display: this.state.success ? "" : "none" }}
+        >
+          <h2>...</h2>
+        </div>
+      );
+
+    const redirectPage = () => {
+      if (this.state.redirect) {
+        return <Redirect to="/" />;
+      }
+    };
+
     return (
       <React.Fragment>
         <div className="loginDiv">
@@ -104,8 +109,9 @@ class Signin extends Component {
                     </Button>
                   </FormGroup>
                 </Form>
-                {showSuccess()}
+                {showLoading()}
                 {showError()}
+                {redirectPage()}
               </div>
             </div>
           </div>
