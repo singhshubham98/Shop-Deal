@@ -33,13 +33,25 @@ const Menu = ({ history }) => {
             <Link className="nav-link" to="/" style={isActive(history, "/")}>
               Home
             </Link>
-            <Link
-              className="nav-link"
-              to="/user/dashboard "
-              style={isActive(history, "/user/dashboard")}
-            >
-              Dashboard
-            </Link>
+
+            {isAuthenticated() && isAuthenticated().user.role === 0 ? (
+              <Link
+                className="nav-link"
+                to="/user/dashboard "
+                style={isActive(history, "/user/dashboard")}
+              >
+                Dashboard
+              </Link>
+            ) : (
+              <Link
+                className="nav-link"
+                to="/admin/dashboard "
+                style={isActive(history, "/admin/dashboard")}
+              >
+                Dashboard
+              </Link>
+            )}
+
             {!isAuthenticated() && (
               <React.Fragment>
                 <Link
