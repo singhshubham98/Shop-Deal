@@ -46,12 +46,9 @@ class AddCategory extends Component {
       error: "",
       success: false
     });
-
-    createCategory(
-      isAuthenticated().user._id,
-      isAuthenticated().token,
-      this.state.name
-    ).then(data => {
+    const { user, token } = isAuthenticated();
+    const { name } = this.state;
+    createCategory(user._id, token, { name }).then(data => {
       if (data.error) {
         this.setState({
           error: true
