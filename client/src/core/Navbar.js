@@ -37,7 +37,7 @@ const Menu = ({ history }) => {
             {isAuthenticated() && isAuthenticated().user.role === 0 ? (
               <Link
                 className="nav-link"
-                to="/user/dashboard "
+                to="/user/dashboard"
                 style={isActive(history, "/user/dashboard")}
               >
                 Dashboard
@@ -45,7 +45,7 @@ const Menu = ({ history }) => {
             ) : (
               <Link
                 className="nav-link"
-                to="/admin/dashboard "
+                to="/admin/dashboard"
                 style={isActive(history, "/admin/dashboard")}
               >
                 Dashboard

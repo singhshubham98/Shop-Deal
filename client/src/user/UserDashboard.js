@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 class Dashboard extends Component {
   render() {
     const { user } = isAuthenticated();
+    console.log(user);
 
     const userLinks = () => (
       <div className="card">

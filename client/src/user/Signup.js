@@ -78,11 +78,11 @@ class Signup extends Component {
                   <FormGroup>
                     <Label>Name</Label>
                     <input
-                      type="name"
+                      type="text"
                       name="name"
                       id="name"
                       className="loginInput"
-                      placeholder="shubham"
+                      placeholder="ABC"
                       onChange={this.onChange}
                     />
                     <Label>Email</Label>
