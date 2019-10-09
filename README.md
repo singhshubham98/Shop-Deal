@@ -1,4 +1,3 @@
-<p align="center"><img src="public/favicon.ico" align="center" width="110"></p>
 <h1 align="center">Shop deal 🛒</h1>
 
 <h4 align="center"> Website for shopping powered by
@@ -16,31 +15,31 @@ https://iiitvcricleague.netlify.com
 - Install Back-end Dependencies.
 
 ```sh
-yarn
+npm install
 ```
 
 - Install Front-end Dependencies.
 
 ```sh
-yarn run client-install
+npm run client-install
 ```
 
 - Run Development Server.
 
 ```sh
-yarn run dev
+npm run dev
 ```
 
 - To run only Back-end Server.
 
 ```sh
-yarn run server
+npm run server
 ```
 
 - To run only Front-end Server.
 
 ```sh
-yarn run client
+npm run client
 ```
 
 ### Authors ✍️
