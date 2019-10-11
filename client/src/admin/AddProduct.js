@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Layout from "../core/Layout";
 import { isAuthenticated } from "../auth/index";
-import { createProduct } from "./apiAdmin";
+import { createProduct, getCategories } from "./apiAdmin";
 
 class AddProduct extends Component {
   state = {
@@ -20,10 +20,27 @@ class AddProduct extends Component {
     formData: ""
   };
 
+  //load categories and set formdata
+
+  init = () => {
+    getCategories()
+      .then(data => {
+        if (data.error) {
+          this.setState({
+            error: data.error
+          });
+        } else {
+          this.setState({
+            categories: data,
+            formData: new FormData()
+          });
+        }
+      })
+      .catch();
+  };
+
   componentDidMount = () => {
-    this.setState({
-      formData: new FormData()
-    });
+    this.init();
   };
 
   render() {
@@ -46,7 +63,7 @@ class AddProduct extends Component {
 
     const handleChange = name => e => {
       const value = name === "photo" ? e.target.files[0] : e.target.value;
-      this.state.formData.set(name, value);
+      formData.set(name, value);
       this.setState({
         [name]: value
       });
@@ -78,6 +95,31 @@ class AddProduct extends Component {
         }
       });
     };
+
+    const showError = () => (
+      <div
+        className="alert alert-danger"
+        style={{ display: error ? "" : "none" }}
+      >
+        <h6> {error}</h6>
+      </div>
+    );
+
+    const showSuccess = () => (
+      <div
+        className="alert alert-info"
+        style={{ display: createdProduct ? "" : "none" }}
+      >
+        <h6>{createdProduct} is created!</h6>
+      </div>
+    );
+
+    const showLoading = () =>
+      loading && (
+        <div className="alert alert-success">
+          <h6>Loading....</h6>
+        </div>
+      );
 
     const newForm = () => (
       <form className="mb-3" onSubmit={handleSubmit}>
@@ -121,13 +163,19 @@ class AddProduct extends Component {
         <div className="form-group">
           <label className="text-muted">Category</label>
           <select onChange={handleChange("category")} className="form-control">
-            <option value="5d9e11e1e4f39d069f5e8a45">Python</option>
-            <option value="5d9e11e1e4f39d069f5e8a45">PHP</option>
+            <option>Please select</option>
+            {categories &&
+              categories.map((c, i) => (
+                <option key={i} value={c._id}>
+                  {c.name}
+                </option>
+              ))}
           </select>
         </div>
         <div className="form-group">
           <label className="text-muted">Shipping</label>
           <select onChange={handleChange("shipping")} className="form-control">
+            <option>Please select</option>
             <option value="0">No</option>
             <option value="1">Yes</option>
           </select>
@@ -147,11 +195,16 @@ class AddProduct extends Component {
     );
     return (
       <Layout
-        title="Add a new category"
-        description={`${user.name}, ready to add a new category?`}
+        title="Add a new Product"
+        description={`${user.name}, ready to add a new Product?`}
       >
         <div className="row">
-          <div className="col-md-6 offset-md-2">{newForm()}</div>
+          <div className="col-md-6 offset-md-2">
+            {showLoading()}
+            {showSuccess()}
+            {showError()}
+            {newForm()}
+          </div>
         </div>
       </Layout>
     );

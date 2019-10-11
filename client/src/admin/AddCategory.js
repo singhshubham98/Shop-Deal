@@ -21,14 +21,20 @@ class AddCategory extends Component {
   showSuccess = () => {
     if (this.state.success) {
       return (
-        <h3 className="text-success">Category {this.state.name} is created.</h3>
+        <div className="alert alert-info">
+          <h6>Category {this.state.name} is created.</h6>
+        </div>
       );
     }
   };
 
   showError = () => {
     if (this.state.error) {
-      return <h3 className="text-danger">Category should be unique.</h3>;
+      return (
+        <div className="alert alert-danger">
+          <h6 className="text-danger">Category should be unique.</h6>
+        </div>
+      );
     }
   };
 
