@@ -42,7 +42,7 @@ router.get("/products", list);
 router.get("/products/related/:productId", relatedProducts);
 router.get("/products/categories", listCategories);
 router.post("/products/by/search", listBySearch);
-router.get("/products/photo/:productId", productPhoto);
+router.get("/product/photo/:productId", productPhoto);
 
 router.param("productId", productById);
 router.param("userId", userById);
