@@ -50,14 +50,10 @@ class AddProduct extends Component {
       description,
       price,
       categories,
-      category,
       quantity,
-      shipping,
-      photo,
       loading,
       error,
       createdProduct,
-      redirectToProfile,
       formData
     } = this.state;
 
