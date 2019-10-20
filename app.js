@@ -10,7 +10,6 @@ const authRoutes = require("./routes/authRoute");
 const userRoutes = require("./routes/userRoute");
 const categoryRoutes = require("./routes/categoryRoute");
 const productRoutes = require("./routes/productRoute");
-const request = require("request");
 
 //apps
 const app = express();

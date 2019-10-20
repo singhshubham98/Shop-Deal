@@ -10,6 +10,11 @@
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
+  "nodemonConfig": {
+    "ignore": [
+      "client/**/*.js"
+    ]
+  },
   "author": "Shubham Singh",
   "license": "ISC",
   "dependencies": {
