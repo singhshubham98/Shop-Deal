@@ -5,6 +5,7 @@ import Checkbox from "./Checkbox";
 import RadioBox from "./RadioBox";
 import { prices } from "./FixedPrice";
 import Card from "./Card";
+import Search from "./Search";
 
 class Shop extends Component {
   state = {
@@ -16,7 +17,7 @@ class Shop extends Component {
         price: []
       }
     },
-    limit: 6,
+    limit: 8,
     skip: 0,
     size: 0,
     filteredResult: []
@@ -69,10 +70,22 @@ class Shop extends Component {
         this.setState({
           filteredResult: [...this.state.filteredResult, ...data.data],
           size: data.size,
-          skip: 0
+          skip: toSkip
         });
       }
     });
+  };
+
+  loadMoreButton = () => {
+    const { size, limit } = this.state;
+    return (
+      size > 0 &&
+      size >= limit && (
+        <button onClick={this.loadMore} className="btn btn-warning mb-5">
+          Load more
+        </button>
+      )
+    );
   };
 
   componentDidMount() {
@@ -118,6 +131,7 @@ class Shop extends Component {
         description={"Search and find books of you choice"}
         className="container-fluid"
       >
+        <Search />
         <div className="row">
           <div className="col-3">
             <h4>Filter by category</h4>
@@ -142,6 +156,7 @@ class Shop extends Component {
                 <Card product={product} key={i} />
               ))}
             </div>
+            {this.loadMoreButton()}
           </div>
         </div>
       </Layout>
