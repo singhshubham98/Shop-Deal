@@ -18,6 +18,12 @@ const Menu = ({ history }) => {
     <React.Fragment>
       <nav className="navbar fixed-top navbar-expand-md custom-navbar navDiv">
         <Link to="/" className="navbar-brand">
+          <img
+            classname="img-responsive"
+            src={require("../image/favicon.ico")}
+            style={{ maxHeight: "40px", maxWidth: "40px" }}
+            alt="logo"
+          />
           Shopdeal
         </Link>
         <button

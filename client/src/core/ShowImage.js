@@ -5,9 +5,9 @@ const ShowImage = ({ item, url }) => {
   return (
     <div className="product-img">
       <img
-        className="mb-3"
+        className="mb-3 img-thumbnail"
         src={`${API}/${url}/photo/${item._id}`}
-        style={{ maxHeight: "100%", maxWidth: "100%" }}
+        style={{ minHeight: "200px", maxHeight: "200px", maxWidth: "100%" }}
         alt={item.name}
       />
     </div>
