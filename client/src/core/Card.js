@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import ShowImage from "./ShowImage";
 import "../styles.css";
 import moment from "moment";
-import { addItem, updateProduct } from "./cart/cartHelpers";
+import { addItem, updateProduct, removeItem } from "./cart/cartHelpers";
 import { Redirect } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
@@ -12,6 +12,7 @@ const Card = ({
   product,
   showViewProductButton = true,
   showAddToCartButton = true,
+  showRemoveProductButton = false,
   description = false,
   cartUpdate = false
 }) => {
@@ -44,11 +45,26 @@ const Card = ({
       </button>
     );
 
+  const showRemoveButton = showRemoveProductButton => {
+    return (
+      showRemoveProductButton && (
+        <button
+          onClick={() => {
+            removeItem(product._id);
+          }}
+          className="btn outline-danger m-2"
+        >
+          Remove Product
+        </button>
+      )
+    );
+  };
+
   const showStock = quantity =>
     quantity > 0 ? (
       <span className="badge badge-primary badge-pill ml-3">In Stock</span>
     ) : (
-      <span className="badge badge-primary badge-pill ml-3">Out of Stock</span>
+      <span className="badge badge-danger badge-pill ml-3">Out of Stock</span>
     );
 
   const handleChangeDecrement = (productId, Count) => {
@@ -106,15 +122,18 @@ const Card = ({
               </p>
             )}
 
-            <p className="black-9">&#8377; {product.price}</p>
+            <p className="black-9">
+              &#8377; {product.price} {showStock(product.quantity)}
+            </p>
             <p className="black-8">Category: {product.category.name}</p>
-            <p className="black-">
+            <p className="black-7">
               Added on {moment(product.createdAt).fromNow()}
             </p>
-            {showStock(product.quantity)}
+
             <br />
             {showViewButton(showViewProductButton)}
             {showAddToCart(showAddToCartButton)}
+            {showRemoveButton(showRemoveProductButton)}
             {showCartUpdateOptions(cartUpdate)}
           </div>
         </div>

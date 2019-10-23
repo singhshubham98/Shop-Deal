@@ -75,6 +75,12 @@
   background-color: rgb(250, 169, 57) !important;
 }
 
+.outline-danger {
+  background-color: red !important;
+  color: #fff !important;
+  font-size: 11px !important;
+}
+
 .product-img {
   min-height: 100px;
 }

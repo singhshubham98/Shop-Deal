@@ -3,6 +3,7 @@ import Layout from "../Layout";
 import Card from "../Card";
 import { getCart } from "./cartHelpers";
 import { Link } from "react-router-dom";
+import Checkout from "./Checkout";
 
 class Cart extends Component {
   state = {
@@ -15,9 +16,20 @@ class Cart extends Component {
     });
   }
 
+  componentDidUpdate() {
+    const itemsCount = JSON.parse(localStorage.getItem("cart")).length;
+    console.log("itemsCount", itemsCount);
+    console.log("State items", this.state.items.length);
+    if (itemsCount !== this.state.items.length) {
+      this.setState({
+        items: getCart()
+      });
+    }
+  }
+
   showItems = items => (
     <React.Fragment>
-      <h2>Your cart has {`${items.length}`} items.</h2>
+      <h4>Your cart has {`${items.length}`} items.</h4>
       <hr />
       <div className="row">
         {items.map((product, i) => (
@@ -26,6 +38,7 @@ class Cart extends Component {
             product={product}
             showAddToCartButton={false}
             cartUpdate={true}
+            showRemoveProductButton={true}
           />
         ))}
       </div>
@@ -33,9 +46,10 @@ class Cart extends Component {
   );
 
   Message = () => (
-    <h2>
-      Your cart is empty. <br /> <Link to="/shop">Continue shopping</Link>
-    </h2>
+    <h4>
+      Your cart is empty. <hr />
+      <br /> <Link to="/shop">Continue shopping</Link>
+    </h4>
   );
   render() {
     return (
@@ -51,7 +65,7 @@ class Cart extends Component {
               : this.Message()}
           </div>
           <div className="col-5">
-            <p>safdasdfdsfsd</p>
+            <Checkout products={this.state.items} />
           </div>
         </div>
       </Layout>
