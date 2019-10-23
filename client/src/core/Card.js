@@ -29,7 +29,14 @@ const Card = ({
   return (
     <div className="mb-3 mr-3" style={{ paddingLeft: 0 }}>
       <div className="card h-100" style={{ width: "13rem", border: "none" }}>
-        <ShowImage className="card-img-top" item={product} url="product" />
+        <ShowImage
+          className="card-img-top"
+          item={product}
+          url="product"
+          minHeight="200px"
+          maxHeight="200px"
+          className="img-thumbnail"
+        />
         <div className="card-block">
           <h6 className="card-title">{product.name}</h6>
           {description && (

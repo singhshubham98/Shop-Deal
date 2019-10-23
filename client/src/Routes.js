@@ -32,7 +32,7 @@ const Routes = () => {
           />
           <AdminRoute path="/create/category" exact component={AddCategory} />
           <AdminRoute path="/create/product" exact component={AddProduct} />
-          <AdminRoute path="/product/:productId" exact component={Product} />
+          <Route path="/product/:productId" exact component={Product} />
         </Switch>
       </div>
     </BrowserRouter>

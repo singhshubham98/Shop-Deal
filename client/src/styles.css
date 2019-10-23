@@ -4,6 +4,25 @@
   font-family: "Roboto", sans-serif;
 }
 
+.black-10 {
+  color: #686767;
+}
+.black-9 {
+  color: #3f3f3f;
+}
+.black-8 {
+  color: #414141;
+}
+.black-7 {
+  color: #8a8a8a;
+}
+.black-6 {
+  color: #bfbfbf;
+}
+.black-5 {
+  color: #b3b3b3;
+}
+
 .btn,
 .jumbotron,
 .nav:hover {
