@@ -16,18 +16,20 @@ class Cart extends Component {
   }
 
   showItems = items => (
-    <div>
+    <React.Fragment>
       <h2>Your cart has {`${items.length}`} items.</h2>
       <hr />
-      {items.map((product, i) => (
-        <Card
-          key={i}
-          product={product}
-          showAddToCartButton={false}
-          cartUpdate={true}
-        />
-      ))}
-    </div>
+      <div className="row">
+        {items.map((product, i) => (
+          <Card
+            key={i}
+            product={product}
+            showAddToCartButton={false}
+            cartUpdate={true}
+          />
+        ))}
+      </div>
+    </React.Fragment>
   );
 
   Message = () => (
@@ -43,12 +45,12 @@ class Cart extends Component {
         className="container-fluid"
       >
         <div className="row">
-          <div className="col-6">
+          <div className="col-7">
             {this.state.items.length > 0
               ? this.showItems(this.state.items)
               : this.Message()}
           </div>
-          <div className="col-6">
+          <div className="col-5">
             <p>safdasdfdsfsd</p>
           </div>
         </div>

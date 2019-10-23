@@ -3,8 +3,10 @@ import { Link } from "react-router-dom";
 import ShowImage from "./ShowImage";
 import "../styles.css";
 import moment from "moment";
-import { addItem } from "./cart/cartHelpers";
+import { addItem, updateProduct } from "./cart/cartHelpers";
 import { Redirect } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
 
 const Card = ({
   product,
@@ -14,6 +16,8 @@ const Card = ({
   cartUpdate = false
 }) => {
   const [redirect, setRedirect] = useState(false);
+  const [count, setCount] = useState(product.count);
+
   const showViewButton = showViewProductButton =>
     showViewProductButton && (
       <Link to={`/product/${product._id}`}>
@@ -46,6 +50,41 @@ const Card = ({
     ) : (
       <span className="badge badge-primary badge-pill ml-3">Out of Stock</span>
     );
+
+  const handleChangeDecrement = (productId, Count) => {
+    setCount(Count < 1 ? 1 : Count - 1);
+    if (Count >= 1) {
+      updateProduct(productId, Count - 1);
+    }
+  };
+
+  const handleChangeIncrement = (productId, Count) => {
+    setCount(Count + 1);
+    if (Count >= 1) {
+      updateProduct(productId, Count + 1);
+    }
+  };
+
+  const showCartUpdateOptions = cartUpdate =>
+    cartUpdate && (
+      <div>
+        <div className="input-group mb-3">
+          <button className="incrementDecrementButton">
+            <FontAwesomeIcon
+              icon={faMinus}
+              onClick={() => handleChangeDecrement(product._id, count)}
+            />
+          </button>
+          <div className="countDisplay">{count}</div>
+          <button
+            className="incrementDecrementButton"
+            onClick={() => handleChangeIncrement(product._id, count)}
+          >
+            <FontAwesomeIcon icon={faPlus} />
+          </button>
+        </div>
+      </div>
+    );
   return (
     <React.Fragment>
       {shouldRedirect(redirect)}
@@ -76,6 +115,7 @@ const Card = ({
             <br />
             {showViewButton(showViewProductButton)}
             {showAddToCart(showAddToCartButton)}
+            {showCartUpdateOptions(cartUpdate)}
           </div>
         </div>
       </div>
