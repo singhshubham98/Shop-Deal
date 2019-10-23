@@ -1,9 +1,14 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSignInAlt, faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
+import {
+  faSignInAlt,
+  faSignOutAlt,
+  faShoppingCart
+} from "@fortawesome/free-solid-svg-icons";
 import "../style/menu.css";
 import { Link, withRouter } from "react-router-dom";
 import { signout, isAuthenticated } from "../auth/index";
+import { itemTotal } from "./cart/cartHelpers";
 
 const isActive = (history, path) => {
   if (history.location.pathname === path) {
@@ -45,6 +50,17 @@ const Menu = ({ history }) => {
               style={isActive(history, "/shop")}
             >
               Shop
+            </Link>
+
+            <Link
+              className="nav-link"
+              to="/cart"
+              style={isActive(history, "/cart")}
+            >
+              <FontAwesomeIcon icon={faShoppingCart} />{" "}
+              <sup>
+                <small className="cart-badge">{itemTotal()}</small>
+              </sup>
             </Link>
 
             {isAuthenticated() && isAuthenticated().user.role === 0 ? (

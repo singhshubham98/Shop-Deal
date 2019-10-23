@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import Layout from "./Layout";
 import { read, listRelatedProduct } from "./apiCore";
 import Card from "./Card";
 import "../styles.css";
@@ -25,7 +24,6 @@ class Product extends Component {
   );
 
   loadSingleProduct = productId => {
-    console.log("productId", productId);
     read(productId).then(data => {
       if (data.error) {
         this.setState({
@@ -55,19 +53,28 @@ class Product extends Component {
     this.loadSingleProduct(productId);
   }
 
+  componentDidUpdate(prevProps) {
+    if (
+      prevProps.match.params.productId !== this.props.match.params.productId
+    ) {
+      const productId = this.props.match.params.productId;
+      this.loadSingleProduct(productId);
+    }
+  }
+
   render() {
     const { product } = this.state;
     return (
-      <div className="container-fluid" style={{ paddingTop: "15vh" }}>
+      <div className="container" style={{ paddingTop: "15vh" }}>
         <div className="row">
           <div className="col-7">
-            <div className="offset-4">
+            <div className="offset-2">
               {product && (
                 <ShowImage
                   item={product}
                   className="img-responsive"
                   url="product"
-                  minHeight="400px"
+                  minHeight="50vmin"
                   maxHeight="100%"
                 />
               )}
@@ -76,13 +83,16 @@ class Product extends Component {
           <div className="col-5 mt-5">
             <h4 className="text-muted">{product.name}</h4>
             <hr />
-            <p className="black-9">&#8377; {product.price}</p>
+            <p className="black-9">
+              &#8377; {product.price} {this.showStock(product.quantity)}
+            </p>
+
             <p className="black-8">{product.description}</p>
             {/* <p className="black-8">Category: {product.category.name}</p> */}
-            <p className="black-7">
+            <p className="black-7">Quantity: {product.quantity}</p>
+            <p className="black-6">
               Added on {moment(product.createdAt).fromNow()}
             </p>
-            {this.showStock(product.quantity)}
             {this.showAddToCartButton()}
           </div>
         </div>

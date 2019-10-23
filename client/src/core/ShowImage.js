@@ -11,6 +11,7 @@ const ShowImage = ({ item, url, minHeight, maxHeight, className }) => {
           style={{
             minHeight: `${minHeight}`,
             maxHeight: `${maxHeight}`,
+            borderRadius: "5px",
             cursor: "pointer"
           }}
           alt={item.name}

@@ -54,18 +54,18 @@ class Home extends Component {
     return (
       <Layout
         title="Home"
-        description={"Welcome to Shopdeal"}
+        description="Welcome to Shopdeal"
         className="container-fluid"
       >
         <h2 className="mb-4 ml-4">New Arrivals</h2>
-        <div className="row">
+        <div className="row ml-4">
           {this.state.productByArrival.map((product, i) => (
             <Card key={i} product={product} />
           ))}
         </div>
 
-        <h2 className="mb-4 ml-3">Best Sellers</h2>
-        <div className="row">
+        <h2 className="mb-4 ml-4">Best Sellers</h2>
+        <div className="row ml-4">
           {this.state.productBySell.map((product, i) => (
             <Card key={i} product={product} />
           ))}
