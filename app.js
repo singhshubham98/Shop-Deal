@@ -10,6 +10,7 @@ const authRoutes = require("./routes/authRoute");
 const userRoutes = require("./routes/userRoute");
 const categoryRoutes = require("./routes/categoryRoute");
 const productRoutes = require("./routes/productRoute");
+const braintreeRoutes = require("./routes/BraintreeRoute");
 
 //apps
 const app = express();
@@ -19,7 +20,8 @@ mongoose
   .connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useCreateIndex: true,
-    useFindAndModify: false
+    useFindAndModify: false,
+    useUnifiedTopology: true
   })
   .then(() => console.log("Database connected"));
 
@@ -39,6 +41,7 @@ app.use("/api", authRoutes);
 app.use("/api", userRoutes);
 app.use("/api", categoryRoutes);
 app.use("/api", productRoutes);
+app.use("/api", braintreeRoutes);
 const port = process.env.PORT || 8000;
 
 app.listen(port, () => {

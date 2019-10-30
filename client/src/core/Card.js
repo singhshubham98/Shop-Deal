@@ -130,7 +130,6 @@ const Card = ({
               Added on {moment(product.createdAt).fromNow()}
             </p>
 
-            <br />
             {showViewButton(showViewProductButton)}
             {showAddToCart(showAddToCartButton)}
             {showRemoveButton(showRemoveProductButton)}
