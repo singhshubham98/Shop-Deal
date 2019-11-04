@@ -91,6 +91,19 @@ const Checkout = ({ products }) => {
               authorization: data.clientToken,
               paypal: {
                 flow: "vault"
+              },
+              googlePay: {
+                googlePayVersion: 2,
+                merchantId: process.env.BRAINTREE_MERCHANT_ID,
+                transactionInfo: {
+                  totalPriceStatus: "FINAL",
+                  totalPrice: getTotal(products),
+                  currencyCode: "INR"
+                },
+                cardRequirements: {
+                  // We recommend collecting and passing billing address information with all Google Pay transactions as a best practice.
+                  billingAddressRequired: true
+                }
               }
             }}
             onInstance={instance => (data.instance = instance)}

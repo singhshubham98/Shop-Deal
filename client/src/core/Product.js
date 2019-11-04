@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { read, listRelatedProduct } from "./apiCore";
+import { addItem } from "./cart/cartHelpers";
 import Card from "./Card";
+import { Redirect } from "react-router-dom";
 import "../styles.css";
 import ShowImage from "./ShowImage";
 import moment from "moment";
@@ -9,7 +11,20 @@ class Product extends Component {
   state = {
     product: {},
     relatedProducts: [],
-    error: false
+    error: false,
+    redirect: false
+  };
+
+  addToCart = () => {
+    addItem(this.state.product, () => {
+      this.setState({
+        redirect: true
+      });
+    });
+  };
+
+  shouldRedirect = () => {
+    return <Redirect to="/cart" />;
   };
 
   showStock = quantity =>
@@ -20,7 +35,9 @@ class Product extends Component {
     );
 
   showAddToCartButton = () => (
-    <button className="btn outline m-2">ADD TO CART</button>
+    <button className="btn outline m-2" onClick={this.addToCart}>
+      ADD TO CART
+    </button>
   );
 
   loadSingleProduct = productId => {
@@ -64,7 +81,10 @@ class Product extends Component {
 
   render() {
     const { product } = this.state;
-    return (
+
+    return this.state.redirect ? (
+      this.shouldRedirect()
+    ) : (
       <div className="container" style={{ paddingTop: "15vh" }}>
         <div className="row">
           <div className="col-7">
