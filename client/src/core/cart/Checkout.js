@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { isAuthenticated } from "../../auth/index";
 import { Link } from "react-router-dom";
 import { getBraintreeClientToken, processPayment } from "../apiCore";
+import { emptyCart } from "./cartHelpers";
 import "braintree-web";
 import DropIn from "braintree-web-drop-in-react";
 
@@ -28,28 +29,30 @@ const Checkout = ({ products }) => {
   };
   useEffect(() => {
     getToken(userId, token);
-  });
+  }, []);
+
   const getTotal = () => {
     return products.reduce((currentValue, nextValue) => {
       return currentValue + nextValue.count * nextValue.price;
     }, 0);
   };
 
-  const showCheckout = () =>
-    isAuthenticated() ? (
+  const showCheckout = () => {
+    return isAuthenticated() ? (
       <div>{showDropIn()}</div>
     ) : (
       <Link to="/signin">
         <button className="btn btn-primary">Sign in to checkout</button>
       </Link>
     );
+  };
 
   const buy = () => {
     // send the nonce to your server
     // nonce = data.instance.requestPaymentMethod
 
     let nonce;
-    let getNonce = data.instance
+    data.instance
       .requestPaymentMethod()
       .then(data => {
         console.log(data);
@@ -63,11 +66,14 @@ const Checkout = ({ products }) => {
         };
 
         processPayment(userId, token, paymentData)
-          .then(
-            res => setData({ ...data, success: res.success })
+          .then(res => {
+            setData({ ...data, success: res.success });
+            emptyCart(() => {
+              console.log("Payment success and empty cart");
+            });
             // empty cart
             // create order
-          )
+          })
           .catch(error => console.log(error));
       })
       .catch(error => {
@@ -82,7 +88,10 @@ const Checkout = ({ products }) => {
         <div>
           <DropIn
             options={{
-              authorization: data.clientToken
+              authorization: data.clientToken,
+              paypal: {
+                flow: "vault"
+              }
             }}
             onInstance={instance => (data.instance = instance)}
           />
@@ -113,7 +122,7 @@ const Checkout = ({ products }) => {
   );
   return (
     <div>
-      <h2>Total: &#8377;{getTotal()}</h2>
+      <h3>Total: &#8377;{getTotal()}</h3>
       {showSuccess(data.success)}
       {showError(data.error)}
       {showCheckout()}

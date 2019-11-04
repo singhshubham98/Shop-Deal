@@ -1,33 +1,18 @@
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../Layout";
 import Card from "../Card";
 import { getCart } from "./cartHelpers";
 import { Link } from "react-router-dom";
 import Checkout from "./Checkout";
 
-class Cart extends Component {
-  state = {
-    items: []
-  };
+const Cart = () => {
+  const [items, setItems] = useState([]);
 
-  componentDidMount() {
-    this.setState({
-      items: getCart()
-    });
-  }
+  useEffect(() => {
+    setItems(getCart());
+  }, [items]);
 
-  componentDidUpdate() {
-    const itemsCount = JSON.parse(localStorage.getItem("cart")).length;
-    console.log("itemsCount", itemsCount);
-    console.log("State items", this.state.items.length);
-    if (itemsCount !== this.state.items.length) {
-      this.setState({
-        items: getCart()
-      });
-    }
-  }
-
-  showItems = items => (
+  const showItems = items => (
     <React.Fragment>
       <h4>Your cart has {`${items.length}`} items.</h4>
       <hr />
@@ -45,32 +30,31 @@ class Cart extends Component {
     </React.Fragment>
   );
 
-  Message = () => (
+  const Message = () => (
     <h4>
       Your cart is empty. <hr />
       <br /> <Link to="/shop">Continue shopping</Link>
     </h4>
   );
-  render() {
-    return (
-      <Layout
-        title="Shopping Cart"
-        description="Manage your cart items"
-        className="container-fluid"
-      >
-        <div className="row">
-          <div className="col-7">
-            {this.state.items.length > 0
-              ? this.showItems(this.state.items)
-              : this.Message()}
-          </div>
-          <div className="col-5">
-            <Checkout products={this.state.items} />
-          </div>
+
+  return (
+    <Layout
+      title="Shopping Cart"
+      description="Manage your cart items"
+      className="container-fluid"
+    >
+      <div className="row">
+        <div className="col-7">
+          {items.length > 0 ? showItems(items) : Message()}
         </div>
-      </Layout>
-    );
-  }
-}
+        <div className="col-5">
+          <h3 className="mb-4">Your cart summary</h3>
+          <hr />
+          <Checkout products={items} />
+        </div>
+      </div>
+    </Layout>
+  );
+};
 
 export default Cart;
