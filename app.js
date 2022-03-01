@@ -21,7 +21,7 @@ mongoose
     useNewUrlParser: true,
     useCreateIndex: true,
     useFindAndModify: false,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
   })
   .then(() => console.log("Database connected"));
 
@@ -36,7 +36,11 @@ app.use(cookieParser());
 app.use(expressValidator());
 app.use(cors());
 //routes middleware
-
+app.get("/", function (req, res, next) {
+  res.json({
+    message: "Welcome to Shopdeal!",
+  });
+});
 app.use("/api", authRoutes);
 app.use("/api", userRoutes);
 app.use("/api", categoryRoutes);
